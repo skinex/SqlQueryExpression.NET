@@ -6,15 +6,17 @@ public static class SqlQueryExpressionExtensions
 {
     public static string Union(this SqlQueryExpression query, 
         UnionType unionType = UnionType.Default, 
-        params SqlQueryExpression[] unions)
+        params SqlQueryExpression[] queries)
     {
         var sb = new StringBuilder();
 
         sb.Append(query.BuildQuery());
 
-        var unionStatement = unionType == UnionType.Default ? "\nUNION\n" : "\nUNION ALL\n";
+        var newLine = Environment.NewLine;
 
-        foreach (var union in unions)
+        var unionStatement = unionType == UnionType.Default ? $"{newLine}UNION{newLine}" : $"{newLine}UNION ALL{newLine}";
+
+        foreach (var union in queries)
         {
             var unionQuery = union.BuildQuery();
             sb.Append(unionStatement);
@@ -25,17 +27,19 @@ public static class SqlQueryExpressionExtensions
     }
     
     public static string ExceptAll(this SqlQueryExpression query, 
-        params SqlQueryExpression[] unions)
+        params SqlQueryExpression[] queries)
     {
         var sb = new StringBuilder();
 
         sb.Append(query.BuildQuery());
+        
+        var newLine = Environment.NewLine;
 
-        foreach (var union in unions)
+        foreach (var except in queries)
         {
-            var unionQuery = union.BuildQuery();
-            sb.Append("\nEXCEPT ALL\n");
-            sb.Append(unionQuery);
+            var exceptQuery = except.BuildQuery();
+            sb.Append($"{newLine}EXCEPT ALL{newLine}");
+            sb.Append(exceptQuery);
         }
 
         return sb.ToString();
