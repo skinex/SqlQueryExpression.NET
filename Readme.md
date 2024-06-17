@@ -25,19 +25,6 @@ Extensions to execute query via SqlConnection also provided (async and sync vers
 var query = new SqlQueryExpression("Accounts",new ColumnSet(true),"a1");
 -----
 SQL - SELECT * FROM Accounts a1
-
-Simple SELECT QUERY WITH OFFSET and FETCH NEXT ROWS:
------
-var query = new SqlQueryExpression("Accounts",new ColumnSet(true),"a1");
------
-SQL - SELECT * FROM Accounts a1
------
-var query = new SqlQueryExpression("Accounts", new ColumnSet("Name", "Email"), "a1");
-query.Filter.AddCondition(new ConditionExpression("Status", ConditionOperator.Equal, "Active"));
-query.PageNumber = 2;
-query.PageSize = 10;
-------
-SQL - "SELECT a1.Name, a1.Email FROM Accounts a1 WHERE (a1.Status = 'Active') OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY";
 ```
 
 <b>Simple SELECT QUERY WITH OFFSET and FETCH NEXT ROWS:</b>
