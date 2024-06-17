@@ -90,7 +90,7 @@ SQL - SELECT a1.Name, a1.Email, c1.FirstName, c1.LastName, o1.OrderId, o1.TotalA
       INNER JOIN Orders o1 ON c1.ContactId = o1.ContactId 
       WHERE (c1.Status = 'Active') AND (o1.Status = 'Completed') AND (a1.Status = 'Active')
 ```
-You can find more examples in Unit tests project
+You can find more examples in Ap.Tools.SqlQueryExpression.Tests project
 
 # Not supported queries
 
