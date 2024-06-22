@@ -51,6 +51,21 @@ query.Filter = filter;
 SQL - SELECT a1.Name, a1.Email FROM Accounts a1
       WHERE (a1.Status = 'Active' AND (a1.Type = 'Customer' OR a1.Type = 'Vendor'))     
 ```
+
+<b>SELECT QUERY with WHERE IN Filter:</b>
+```c#
+        var query = new SqlQueryExpression(
+            "Accounts",
+            new ColumnSet("Name", "Email"),
+            "a1"
+        );
+        var guids = new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.Empty };
+        query.Filter.AddCondition(new ConditionExpression("ContactId", ConditionOperator.In, guids));
+------
+SQL - SELECT a1.Name, a1.Email FROM Accounts a1 
+      WHERE (a1.ContactId IN ('0a750c94-ca2c-431e-82db-ec69c1cfa493','dbea338f-7bcf-4ea1-b6f3-9dda0ef53262','00000000-0000-0000-0000-000000000000'))         
+```
+
 <b>SELECT QUERY with Nested Joins:</b>
 
 ```c#
@@ -103,6 +118,5 @@ You can find more examples in Ap.Tools.SqlQueryExpression.Tests project
 - APPLY (CROSS and OUTER)
 - PIVOT
 - QUERY HINTS
-- WHERE IN
 
 <i> Feel free to contribute towards implementation of any listed queries :) </i>
