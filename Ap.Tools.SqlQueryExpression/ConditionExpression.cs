@@ -1,10 +1,13 @@
-﻿namespace Ap.Tools.SqlQueryExpression;
+﻿using System.Data;
+using System.Text;
+
+namespace Ap.Tools.SqlQueryExpression;
 
 public sealed class ConditionExpression
 {
     public string AttributeName { get; }
     public ConditionOperator Operator { get; }
-    public object Value { get; }
+    public object Value { get; private set; }
     
     public ConditionExpression(FilterExpression nestedFilter)
     {
@@ -12,6 +15,13 @@ public sealed class ConditionExpression
     }
     
     public ConditionExpression(string attributeName, ConditionOperator conditionOperator, object value)
+    {
+        AttributeName = attributeName;
+        Operator = conditionOperator;
+        Value = value;
+    }
+    
+    public ConditionExpression(string attributeName, ConditionOperator conditionOperator, Array value)
     {
         AttributeName = attributeName;
         Operator = conditionOperator;
@@ -25,20 +35,61 @@ public sealed class ConditionExpression
             return nestedFilter.BuildFilter(alias);
         }
         
-        var operatorString = Operator switch
-        {
-            ConditionOperator.Equal => "=",
-            ConditionOperator.NotEqual => "!=",
-            ConditionOperator.GreaterThan => ">",
-            ConditionOperator.LessThan => "<",
-            ConditionOperator.Like => "LIKE",
-            _ => throw new NotImplementedException()
-        };
-
-        var valueString = Value is string ? $"'{Value}'" : Value.ToString();
         var prefixedAttributeName = $"{alias}.{AttributeName}";
         
-        return $"{prefixedAttributeName} {operatorString} {valueString}";
+        return Operator switch
+        {
+            ConditionOperator.Equal => BuildDefaultCondition("=", prefixedAttributeName),
+            ConditionOperator.NotEqual => BuildDefaultCondition("!=", prefixedAttributeName),
+            ConditionOperator.GreaterThan => BuildDefaultCondition(">", prefixedAttributeName),
+            ConditionOperator.LessThan => BuildDefaultCondition("<", prefixedAttributeName),
+            ConditionOperator.Like => BuildDefaultCondition("LIKE", prefixedAttributeName),
+            ConditionOperator.In => BuildInCondition(prefixedAttributeName),
+            _ => throw new NotImplementedException()
+        };
+    }
+
+    private string BuildDefaultCondition(string operatorString, string attributeName)
+    {
+        var valueString = Value is string ? $"'{Value}'" : Value.ToString();
+        return $"{attributeName} {operatorString} {valueString}";
+    }
+
+    private string BuildInCondition(string attributeName)
+    {
+        if (Value is not Array values)
+        {
+            throw new ConstraintException("IN operator must be supplied with array of values");
+        }
+
+        var inValues = new List<string>();
+        
+        foreach (var value in values)
+        {
+            var valueType = value.GetType();
+
+            switch (value)
+            {
+                case string strValue:
+                    inValues.Add($"'{strValue}'");
+                    continue;
+                case DateTime dt:
+                    inValues.Add($"'{dt.ToString("O")}'");
+                    continue;
+                case Guid gd:
+                    inValues.Add($"'{gd.ToString("D")}'");
+                    continue;
+            }
+
+            if (valueType.IsPrimitive)
+            {
+                inValues.Add(value.ToString());
+            }
+        }
+
+        var valueString = $"({string.Join(',', inValues)})";
+
+        return $"{attributeName} IN {valueString}";
     }
 }
 
@@ -48,5 +99,6 @@ public enum ConditionOperator
     NotEqual,
     GreaterThan,
     LessThan,
-    Like
+    Like,
+    In
 }

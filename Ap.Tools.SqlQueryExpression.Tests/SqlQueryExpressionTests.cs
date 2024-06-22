@@ -1,3 +1,5 @@
+using Array = System.Array;
+
 namespace Ap.Tools.SqlQueryExpression.Tests;
 
 [TestClass]
@@ -181,6 +183,47 @@ public class SqlQueryExpressionTests
         const string expectedQuery = "SELECT a1.Name, a1.Email FROM Accounts a1 " +
                                      "WHERE (a1.Status = 'Active' AND (a1.Type = 'Customer' OR a1.Type = 'Vendor'))";
 
+        Assert.AreEqual(expectedQuery, sqlQuery);
+    }
+
+    [TestMethod]
+    public void BuildQuery_WhereInGuidsCondition()
+    {
+        var query = new SqlQueryExpression(
+            "Accounts",
+            new ColumnSet("Name", "Email"),
+            "a1"
+        );
+
+        var guids = new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.Empty };
+        var strGuids = guids.Select(x => $"'{x.ToString()}'");
+
+        query.Filter.AddCondition(new ConditionExpression("ContactId", ConditionOperator.In, guids));
+
+        var sqlQuery = query.BuildQuery();
+        var expectedQuery = $"SELECT a1.Name, a1.Email FROM Accounts a1 " +
+                                  $"WHERE (a1.ContactId IN ({string.Join(',', strGuids)}))";
+        
+        Assert.AreEqual(expectedQuery, sqlQuery);
+    }
+    
+    [TestMethod]
+    public void BuildQuery_WhereInPrimitivesCondition()
+    {
+        var query = new SqlQueryExpression(
+            "Accounts",
+            new ColumnSet("Name", "Email"),
+            "a1"
+        );
+
+        var ints = new[] { 1, 5, 8 };
+
+        query.Filter.AddCondition(new ConditionExpression("ContactId", ConditionOperator.In, ints));
+
+        var sqlQuery = query.BuildQuery();
+        var expectedQuery = $"SELECT a1.Name, a1.Email FROM Accounts a1 " +
+                                  $"WHERE (a1.ContactId IN ({string.Join(',', ints)}))";
+        
         Assert.AreEqual(expectedQuery, sqlQuery);
     }
 }
