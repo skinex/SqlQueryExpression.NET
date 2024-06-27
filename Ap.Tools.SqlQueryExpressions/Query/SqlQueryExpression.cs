@@ -1,7 +1,10 @@
-﻿namespace Ap.Tools.SqlQueryExpression;
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Ap.Tools.SqlQueryExpressions.Expressions;
+using Ap.Tools.SqlQueryExpressions.Models;
+
+namespace Ap.Tools.SqlQueryExpressions.Query;
 
 /// <summary>
 /// Class that holds information about
@@ -20,7 +23,7 @@ public sealed class SqlQueryExpression
     public ColumnSet ColumnSet { get; }
     public FilterExpression Filter { get; set; } = new FilterExpression();
     public List<OrderExpression> SortingOrders { get; } = new List<OrderExpression>();
-    public List<LinkTable> LinkTables { get; } = new List<LinkTable>();
+    public List<LinkTableExpression> LinkTables { get; } = new List<LinkTableExpression>();
     public int? PageNumber { get; set; }
     public int? PageSize { get; set; }
     public int? Top { get; set; }
@@ -102,5 +105,3 @@ public sealed class SqlQueryExpression
         return sb.ToString();
     }
 }
-    
-

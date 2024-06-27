@@ -1,4 +1,4 @@
-﻿namespace Ap.Tools.SqlQueryExpression;
+﻿namespace Ap.Tools.SqlQueryExpressions.Expressions;
 
 public sealed class OrderExpression
 {
@@ -16,10 +16,4 @@ public sealed class OrderExpression
         var prefixedAttributeName = alias != null ? $"{alias}.{AttributeName}" : AttributeName;
         return $"{prefixedAttributeName} {(SortingType)}";
     }
-}
-
-public enum SortingType
-{
-    ASC,
-    DESC
 }

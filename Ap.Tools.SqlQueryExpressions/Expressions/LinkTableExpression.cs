@@ -1,20 +1,29 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
+using Ap.Tools.SqlQueryExpressions.Models;
 
-namespace Ap.Tools.SqlQueryExpression;
+namespace Ap.Tools.SqlQueryExpressions.Expressions;
 
-public class LinkTable
+public class LinkTableExpression
 {
-    public string LinkFromTableAlias { get; }
-    public string LinkFromAttributeName { get; }
-    public string LinkToTableName { get; }
-    public string LinkToAttributeName { get; }
-    public ColumnSet Columns { get; }
-    public FilterExpression LinkCriteria { get; } = new();
-    public List<LinkTable> LinkTables { get; } = new();
-    public JoinType JoinType { get; }
-    public string Alias { get; }
+    public string LinkFromTableAlias { get; init; }
+    public string LinkFromAttributeName { get; init; }
+    public string LinkToTableName { get; init; }
+    public string LinkToAttributeName { get; init; }
+    public ColumnSet Columns { get; init; }
+    public FilterExpression LinkCriteria { get; init; } = new();
+    public List<LinkTableExpression> LinkTables { get; init; } = new();
+    public JoinType JoinType { get; init; }
+    public string Alias { get; init; }
 
-    public LinkTable(string linkFromTableAlias, 
+    /// <summary>
+    /// public ctor for property initialization
+    /// </summary>
+    public LinkTableExpression()
+    {
+    }
+
+    public LinkTableExpression(string linkFromTableAlias, 
         string linkFromAttributeName, 
         string linkToTableName, 
         string linkToAttributeName, 

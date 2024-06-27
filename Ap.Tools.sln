@@ -1,8 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ap.Tools.SqlQueryExpression", "Ap.Tools.SqlQueryExpression\Ap.Tools.SqlQueryExpression.csproj", "{E069D4DA-BA02-462D-A212-5279D140DE6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ap.Tools.SqlQueryExpressions", "Ap.Tools.SqlQueryExpressions\Ap.Tools.SqlQueryExpressions.csproj", "{E069D4DA-BA02-462D-A212-5279D140DE6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ap.Tools.SqlQueryExpression.Tests", "Ap.Tools.SqlQueryExpression.Tests\Ap.Tools.SqlQueryExpression.Tests.csproj", "{7EA92268-09BB-43C3-9156-86C7F8028C60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ap.Tools.SqlQueryExpressions.Tests", "Ap.Tools.SqlQueryExpressions.Tests\Ap.Tools.SqlQueryExpressions.Tests.csproj", "{7EA92268-09BB-43C3-9156-86C7F8028C60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ap.Tools.TSqlService", "Ap.Tools.TSqlService\Ap.Tools.TSqlService.csproj", "{27967A24-1632-4DAE-8053-96E8BAF358A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ap.Tools.TSqlService.Abstractions", "Ap.Tools.TSqlService.Abstractions\Ap.Tools.TSqlService.Abstractions.csproj", "{BF71C233-AA26-4CE6-8673-CAE41D41FE03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +22,13 @@ Global
 		{7EA92268-09BB-43C3-9156-86C7F8028C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EA92268-09BB-43C3-9156-86C7F8028C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EA92268-09BB-43C3-9156-86C7F8028C60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27967A24-1632-4DAE-8053-96E8BAF358A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27967A24-1632-4DAE-8053-96E8BAF358A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27967A24-1632-4DAE-8053-96E8BAF358A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27967A24-1632-4DAE-8053-96E8BAF358A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF71C233-AA26-4CE6-8673-CAE41D41FE03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF71C233-AA26-4CE6-8673-CAE41D41FE03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF71C233-AA26-4CE6-8673-CAE41D41FE03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF71C233-AA26-4CE6-8673-CAE41D41FE03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

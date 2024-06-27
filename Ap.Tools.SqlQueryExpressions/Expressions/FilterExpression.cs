@@ -1,6 +1,7 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 
-namespace Ap.Tools.SqlQueryExpression;
+namespace Ap.Tools.SqlQueryExpressions.Expressions;
 
 public sealed class FilterExpression
 {

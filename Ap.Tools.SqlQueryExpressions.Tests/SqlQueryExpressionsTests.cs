@@ -1,9 +1,11 @@
-using Array = System.Array;
+using Ap.Tools.SqlQueryExpressions.Expressions;
+using Ap.Tools.SqlQueryExpressions.Models;
+using Ap.Tools.SqlQueryExpressions.Query;
 
-namespace Ap.Tools.SqlQueryExpression.Tests;
+namespace Ap.Tools.SqlQueryExpressions.Tests;
 
 [TestClass]
-public class SqlQueryExpressionTests
+public class SqlQueryExpressionsTests
 {
     [TestMethod]
     public void BuildQuery_ColumnSet_True()
@@ -80,7 +82,7 @@ public class SqlQueryExpressionTests
     [TestMethod]
     public void BuildQuery_ComplexJoinWithFilters()
     {
-        var query = new SqlQueryExpression(
+        var query = new SqlQueryExpressions.Query.SqlQueryExpression(
             "Accounts",
             new ColumnSet("Name", "Email"),
             "a1"
@@ -88,7 +90,7 @@ public class SqlQueryExpressionTests
 
         query.Filter.AddCondition(new ConditionExpression("Status", ConditionOperator.Equal, "Active"));
 
-        var linkEntity = new LinkTable(
+        var linkEntity = new LinkTableExpression(
             query.Alias,
             "AccountId",
             "Contacts",
@@ -121,7 +123,7 @@ public class SqlQueryExpressionTests
 
         query.Filter.AddCondition(new ConditionExpression("Status", ConditionOperator.Equal, "Active"));
 
-        var linkEntity = new LinkTable(
+        var linkEntity = new LinkTableExpression(
             "a1",
             "AccountId",
             "Contacts",
@@ -133,7 +135,7 @@ public class SqlQueryExpressionTests
 
         linkEntity.LinkCriteria.AddCondition(new ConditionExpression("Status", ConditionOperator.Equal, "Active"));
 
-        var nestedLinkEntity = new LinkTable(
+        var nestedLinkEntity = new LinkTableExpression(
             "c1",
             "ContactId",
             "Orders",
@@ -202,7 +204,7 @@ public class SqlQueryExpressionTests
 
         var sqlQuery = query.BuildQuery();
         var expectedQuery = $"SELECT a1.Name, a1.Email FROM Accounts a1 " +
-                                  $"WHERE (a1.ContactId IN ({string.Join(',', strGuids)}))";
+                            $"WHERE (a1.ContactId IN ({string.Join(',', strGuids)}))";
         
         Assert.AreEqual(expectedQuery, sqlQuery);
     }
@@ -210,7 +212,7 @@ public class SqlQueryExpressionTests
     [TestMethod]
     public void BuildQuery_WhereInPrimitivesCondition()
     {
-        var query = new SqlQueryExpression(
+        var query = new SqlQueryExpressions.Query.SqlQueryExpression(
             "Accounts",
             new ColumnSet("Name", "Email"),
             "a1"
@@ -222,7 +224,7 @@ public class SqlQueryExpressionTests
 
         var sqlQuery = query.BuildQuery();
         var expectedQuery = $"SELECT a1.Name, a1.Email FROM Accounts a1 " +
-                                  $"WHERE (a1.ContactId IN ({string.Join(',', ints)}))";
+                            $"WHERE (a1.ContactId IN ({string.Join(',', ints)}))";
         
         Assert.AreEqual(expectedQuery, sqlQuery);
     }

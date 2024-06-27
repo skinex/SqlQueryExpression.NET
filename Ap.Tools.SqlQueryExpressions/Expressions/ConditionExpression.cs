@@ -1,7 +1,8 @@
-﻿using System.Data;
-using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 
-namespace Ap.Tools.SqlQueryExpression;
+namespace Ap.Tools.SqlQueryExpressions.Expressions;
 
 public sealed class ConditionExpression
 {
@@ -91,14 +92,4 @@ public sealed class ConditionExpression
 
         return $"{attributeName} IN {valueString}";
     }
-}
-
-public enum ConditionOperator
-{
-    Equal,
-    NotEqual,
-    GreaterThan,
-    LessThan,
-    Like,
-    In
 }

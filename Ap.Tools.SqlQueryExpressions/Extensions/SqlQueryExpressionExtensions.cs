@@ -1,12 +1,13 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
-namespace Ap.Tools.SqlQueryExpression.Extensions;
+namespace Ap.Tools.SqlQueryExpressions.Extensions;
 
 public static class SqlQueryExpressionExtensions
 {
-    public static string Union(this SqlQueryExpression query, 
+    public static string Union(this SqlQueryExpressions.Query.SqlQueryExpression query, 
         UnionType unionType = UnionType.Default, 
-        params SqlQueryExpression[] queries)
+        params SqlQueryExpressions.Query.SqlQueryExpression[] queries)
     {
         var sb = new StringBuilder();
 
@@ -26,8 +27,8 @@ public static class SqlQueryExpressionExtensions
         return sb.ToString();
     }
     
-    public static string ExceptAll(this SqlQueryExpression query, 
-        params SqlQueryExpression[] queries)
+    public static string ExceptAll(this SqlQueryExpressions.Query.SqlQueryExpression query, 
+        params SqlQueryExpressions.Query.SqlQueryExpression[] queries)
     {
         var sb = new StringBuilder();
 
@@ -44,10 +45,4 @@ public static class SqlQueryExpressionExtensions
 
         return sb.ToString();
     }
-}
-
-public enum UnionType
-{
-    Default,
-    All
 }

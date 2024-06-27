@@ -7,6 +7,7 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <RootNamespace>Ap.Tools.SqlQueryExpressions.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Ap.Tools.SqlQueryExpression\Ap.Tools.SqlQueryExpression.csproj" />
+      <ProjectReference Include="..\Ap.Tools.SqlQueryExpressions\Ap.Tools.SqlQueryExpressions.csproj" />
     </ItemGroup>
 
 </Project>

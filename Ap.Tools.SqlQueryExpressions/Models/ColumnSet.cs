@@ -1,6 +1,8 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Ap.Tools.SqlQueryExpression;
+namespace Ap.Tools.SqlQueryExpressions.Models;
 
 public sealed class ColumnSet
 {
