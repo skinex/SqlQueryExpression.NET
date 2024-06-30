@@ -2,18 +2,18 @@
 
 public sealed class OrderExpression
 {
-    public string AttributeName { get; }
+    public string ColumnName { get; }
     public SortingType SortingType { get; }
 
-    public OrderExpression(string attributeName, SortingType sortingType)
+    public OrderExpression(string columnName, SortingType sortingType)
     {
-        AttributeName = attributeName;
+        ColumnName = columnName;
         SortingType = sortingType;
     }
 
     internal string BuildOrder(string alias = null)
     {
-        var prefixedAttributeName = alias != null ? $"{alias}.{AttributeName}" : AttributeName;
+        var prefixedAttributeName = alias != null ? $"{alias}.{ColumnName}" : ColumnName;
         return $"{prefixedAttributeName} {(SortingType)}";
     }
 }

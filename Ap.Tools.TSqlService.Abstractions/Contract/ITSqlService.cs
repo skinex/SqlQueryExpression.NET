@@ -12,8 +12,17 @@ namespace Ap.Tools.TSqlService.Abstractions.Contract;
 public interface ITSqlService
 {
     Task<TSqlTable> RetrieveAsync<TPrimary>(string tableName, 
-        PrimaryAttribute<TPrimary> primaryAttribute,
+        PrimaryColumn<TPrimary> primaryColumn,
         ColumnSet columns);
 
-    Task<IEnumerable<TSqlTable>> RetrieveMultipleAsync(SqlQueryExpression query);
+    Task<ICollection<TSqlTable>> RetrieveMultipleAsync(SqlQueryExpression query);
+
+    Task<PrimaryColumn<T>> CreateAsync<T>(string tableName, 
+        string primaryColumnName,
+        TSqlTable data);
+
+    Task UpdateAsync(string tableName,
+        TSqlTable data);
+
+    Task DeleteAsync<T>(string tableName, PrimaryColumn<T> primaryColumn);
 }

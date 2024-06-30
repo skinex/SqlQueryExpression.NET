@@ -90,7 +90,7 @@ public class SqlQueryExpressionsTests
 
         query.Filter.AddCondition(new ConditionExpression("Status", ConditionOperator.Equal, "Active"));
 
-        var linkEntity = new LinkTableExpression(
+        var linkTable = new LinkTableExpression(
             query.Alias,
             "AccountId",
             "Contacts",
@@ -100,8 +100,8 @@ public class SqlQueryExpressionsTests
             "c1"
         );
 
-        linkEntity.LinkCriteria.AddCondition(new ConditionExpression("Status", ConditionOperator.Equal, "Active"));
-        query.LinkTables.Add(linkEntity);
+        linkTable.LinkCriteria.AddCondition(new ConditionExpression("Status", ConditionOperator.Equal, "Active"));
+        query.LinkTables.Add(linkTable);
 
         var sqlQuery = query.BuildQuery();
         
@@ -123,7 +123,7 @@ public class SqlQueryExpressionsTests
 
         query.Filter.AddCondition(new ConditionExpression("Status", ConditionOperator.Equal, "Active"));
 
-        var linkEntity = new LinkTableExpression(
+        var linkTable = new LinkTableExpression(
             "a1",
             "AccountId",
             "Contacts",
@@ -133,9 +133,9 @@ public class SqlQueryExpressionsTests
             "c1"
         );
 
-        linkEntity.LinkCriteria.AddCondition(new ConditionExpression("Status", ConditionOperator.Equal, "Active"));
+        linkTable.LinkCriteria.AddCondition(new ConditionExpression("Status", ConditionOperator.Equal, "Active"));
 
-        var nestedLinkEntity = new LinkTableExpression(
+        var nestedLinkTable = new LinkTableExpression(
             "c1",
             "ContactId",
             "Orders",
@@ -145,10 +145,10 @@ public class SqlQueryExpressionsTests
             "o1"
         );
 
-        nestedLinkEntity.LinkCriteria.AddCondition(new ConditionExpression("Status", ConditionOperator.Equal, "Completed"));
+        nestedLinkTable.LinkCriteria.AddCondition(new ConditionExpression("Status", ConditionOperator.Equal, "Completed"));
 
-        linkEntity.LinkTables.Add(nestedLinkEntity);
-        query.LinkTables.Add(linkEntity);
+        linkTable.LinkTables.Add(nestedLinkTable);
+        query.LinkTables.Add(linkTable);
 
         var sqlQuery = query.BuildQuery();
         

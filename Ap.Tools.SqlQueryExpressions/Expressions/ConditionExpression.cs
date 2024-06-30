@@ -6,7 +6,7 @@ namespace Ap.Tools.SqlQueryExpressions.Expressions;
 
 public sealed class ConditionExpression
 {
-    public string AttributeName { get; }
+    public string ColumnName { get; }
     public ConditionOperator Operator { get; }
     public object Value { get; private set; }
     
@@ -15,16 +15,16 @@ public sealed class ConditionExpression
         Value = nestedFilter;
     }
     
-    public ConditionExpression(string attributeName, ConditionOperator conditionOperator, object value)
+    public ConditionExpression(string columnName, ConditionOperator conditionOperator, object value)
     {
-        AttributeName = attributeName;
+        ColumnName = columnName;
         Operator = conditionOperator;
         Value = value;
     }
     
-    public ConditionExpression(string attributeName, ConditionOperator conditionOperator, Array value)
+    public ConditionExpression(string columnName, ConditionOperator conditionOperator, Array value)
     {
-        AttributeName = attributeName;
+        ColumnName = columnName;
         Operator = conditionOperator;
         Value = value;
     }
@@ -36,27 +36,27 @@ public sealed class ConditionExpression
             return nestedFilter.BuildFilter(alias);
         }
         
-        var prefixedAttributeName = $"{alias}.{AttributeName}";
+        var prefixedColumnName = $"{alias}.{ColumnName}";
         
         return Operator switch
         {
-            ConditionOperator.Equal => BuildDefaultCondition("=", prefixedAttributeName),
-            ConditionOperator.NotEqual => BuildDefaultCondition("!=", prefixedAttributeName),
-            ConditionOperator.GreaterThan => BuildDefaultCondition(">", prefixedAttributeName),
-            ConditionOperator.LessThan => BuildDefaultCondition("<", prefixedAttributeName),
-            ConditionOperator.Like => BuildDefaultCondition("LIKE", prefixedAttributeName),
-            ConditionOperator.In => BuildInCondition(prefixedAttributeName),
+            ConditionOperator.Equal => BuildDefaultCondition("=", prefixedColumnName),
+            ConditionOperator.NotEqual => BuildDefaultCondition("!=", prefixedColumnName),
+            ConditionOperator.GreaterThan => BuildDefaultCondition(">", prefixedColumnName),
+            ConditionOperator.LessThan => BuildDefaultCondition("<", prefixedColumnName),
+            ConditionOperator.Like => BuildDefaultCondition("LIKE", prefixedColumnName),
+            ConditionOperator.In => BuildInCondition(prefixedColumnName),
             _ => throw new NotImplementedException()
         };
     }
 
-    private string BuildDefaultCondition(string operatorString, string attributeName)
+    private string BuildDefaultCondition(string operatorString, string columnName)
     {
         var valueString = Value is string ? $"'{Value}'" : Value.ToString();
-        return $"{attributeName} {operatorString} {valueString}";
+        return $"{columnName} {operatorString} {valueString}";
     }
 
-    private string BuildInCondition(string attributeName)
+    private string BuildInCondition(string columnName)
     {
         if (Value is not Array values)
         {
@@ -90,6 +90,6 @@ public sealed class ConditionExpression
 
         var valueString = $"({string.Join(',', inValues)})";
 
-        return $"{attributeName} IN {valueString}";
+        return $"{columnName} IN {valueString}";
     }
 }

@@ -7,9 +7,9 @@ namespace Ap.Tools.SqlQueryExpressions.Expressions;
 public class LinkTableExpression
 {
     public string LinkFromTableAlias { get; init; }
-    public string LinkFromAttributeName { get; init; }
+    public string LinkFromColumnName { get; init; }
     public string LinkToTableName { get; init; }
-    public string LinkToAttributeName { get; init; }
+    public string LinkToColumnName { get; init; }
     public ColumnSet Columns { get; init; }
     public FilterExpression LinkCriteria { get; init; } = new();
     public List<LinkTableExpression> LinkTables { get; init; } = new();
@@ -24,17 +24,17 @@ public class LinkTableExpression
     }
 
     public LinkTableExpression(string linkFromTableAlias, 
-        string linkFromAttributeName, 
+        string linkFromColumnName, 
         string linkToTableName, 
-        string linkToAttributeName, 
+        string linkToColumnName, 
         ColumnSet columns, 
         JoinType joinType = JoinType.Left, 
         string alias = null)
     {
         LinkFromTableAlias = linkFromTableAlias;
-        LinkFromAttributeName = linkFromAttributeName;
+        LinkFromColumnName = linkFromColumnName;
         LinkToTableName = linkToTableName;
-        LinkToAttributeName = linkToAttributeName;
+        LinkToColumnName = linkToColumnName;
         Columns = columns;
         JoinType = joinType;
         Alias = alias ?? linkToTableName;
@@ -46,7 +46,7 @@ public class LinkTableExpression
         var linkAlias = Alias ?? LinkToTableName;
         
         var sb = new StringBuilder();
-        sb.Append($"{joinTypeString} {LinkToTableName} {linkAlias} ON {LinkFromTableAlias}.{LinkFromAttributeName} = {linkAlias}.{LinkToAttributeName}");
+        sb.Append($"{joinTypeString} {LinkToTableName} {linkAlias} ON {LinkFromTableAlias}.{LinkFromColumnName} = {linkAlias}.{LinkToColumnName}");
 
         if (LinkCriteria.Conditions.Count > 0)
         {
