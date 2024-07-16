@@ -19,7 +19,7 @@ namespace Ap.Tools.SqlQueryExpressions.Query;
 public sealed class SqlQueryExpression
 {
     public string TableName { get; }
-    public string Alias { get; }
+    public string Alias { get; set; }
     public ColumnSet ColumnSet { get; }
     public FilterExpression Filter { get; set; } = new FilterExpression();
     public List<OrderExpression> SortingOrders { get; } = new List<OrderExpression>();
@@ -27,6 +27,13 @@ public sealed class SqlQueryExpression
     public int? PageNumber { get; set; }
     public int? PageSize { get; set; }
     public int? Top { get; set; }
+
+    public SqlQueryExpression(string tableName)
+    {
+        TableName = tableName;
+        ColumnSet = new ColumnSet();
+        Alias = tableName;
+    }
 
     public SqlQueryExpression(string tableName, ColumnSet columnSet, string alias = null)
     {

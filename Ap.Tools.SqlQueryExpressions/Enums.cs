@@ -5,7 +5,9 @@ public enum ConditionOperator
     Equal,
     NotEqual,
     GreaterThan,
+    GreaterOrEqual,
     LessThan,
+    LessOrEqual,
     Like,
     In
 }

@@ -43,6 +43,8 @@ public sealed class ConditionExpression
             ConditionOperator.Equal => BuildDefaultCondition("=", prefixedColumnName),
             ConditionOperator.NotEqual => BuildDefaultCondition("!=", prefixedColumnName),
             ConditionOperator.GreaterThan => BuildDefaultCondition(">", prefixedColumnName),
+            ConditionOperator.GreaterOrEqual => BuildDefaultCondition(">=", prefixedColumnName),
+            ConditionOperator.LessOrEqual => BuildDefaultCondition("<=", prefixedColumnName),
             ConditionOperator.LessThan => BuildDefaultCondition("<", prefixedColumnName),
             ConditionOperator.Like => BuildDefaultCondition("LIKE", prefixedColumnName),
             ConditionOperator.In => BuildInCondition(prefixedColumnName),

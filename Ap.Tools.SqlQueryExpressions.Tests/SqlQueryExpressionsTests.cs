@@ -82,7 +82,7 @@ public class SqlQueryExpressionsTests
     [TestMethod]
     public void BuildQuery_ComplexJoinWithFilters()
     {
-        var query = new SqlQueryExpressions.Query.SqlQueryExpression(
+        var query = new SqlQueryExpression(
             "Accounts",
             new ColumnSet("Name", "Email"),
             "a1"

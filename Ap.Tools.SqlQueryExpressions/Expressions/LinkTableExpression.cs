@@ -6,15 +6,15 @@ namespace Ap.Tools.SqlQueryExpressions.Expressions;
 
 public class LinkTableExpression
 {
-    public string LinkFromTableAlias { get; init; }
-    public string LinkFromColumnName { get; init; }
-    public string LinkToTableName { get; init; }
-    public string LinkToColumnName { get; init; }
-    public ColumnSet Columns { get; init; }
-    public FilterExpression LinkCriteria { get; init; } = new();
-    public List<LinkTableExpression> LinkTables { get; init; } = new();
-    public JoinType JoinType { get; init; }
-    public string Alias { get; init; }
+    public string LinkFromTableAlias { get; internal set; }
+    public string LinkFromColumnName { get; internal set; }
+    public string LinkToTableName { get; internal set; }
+    public string LinkToColumnName { get; internal set; }
+    public ColumnSet Columns { get; internal set; } = new ColumnSet();
+    public FilterExpression LinkCriteria { get; set; } = new();
+    public List<LinkTableExpression> LinkTables { get; internal set; } = new();
+    public JoinType JoinType { get; set; }
+    public string Alias { get; set; }
 
     /// <summary>
     /// public ctor for property initialization

@@ -6,6 +6,10 @@ https://learn.microsoft.com/en-us/dotnet/api/microsoft.xrm.sdk.query.queryexpres
 
 It provides object oriented way of building T-SQL queries in .NET applications.
 
+_Fluent-way to build queries was also added, you can check how to build queries in both OOP and Fluent way in Samples section._
+
+**Just a reminder, even though Fluent approach could provide a better developer experience thanks to intellisense, this library main goal is to provide an Object oriented way to build queries.**
+
 # Supported queries
 
 Currently library supports simple SQL queries, which includes simple selects, where conditions, joins (INNER and LEFT), union and except all.
@@ -22,23 +26,39 @@ Extensions to execute query via SqlConnection also provided (async and sync vers
 
 <b>Simple SELECT QUERY</b>
 ```c#
+OOP style:
 var query = new SqlQueryExpression("Accounts",new ColumnSet(true),"a1");
+
+Fluent style:
+var query = FluentSqlQueryExpression.QueryTable("Accounts")
+    .Select(true)
+    .WithAlias("a1");    
 -----
 SQL - SELECT * FROM Accounts a1
 ```
 
 <b>Simple SELECT QUERY WITH OFFSET and FETCH NEXT ROWS:</b>
 ```c#
+OOP style:
 var query = new SqlQueryExpression("Accounts", new ColumnSet("Name", "Email"), "a1");
 query.Filter.AddCondition(new ConditionExpression("Status", ConditionOperator.Equal, "Active"));
 query.PageNumber = 2;
 query.PageSize = 10;
+
+Fluent style:
+var query = FluentSqlQueryExpression.QueryTable("Accounts")
+    .Select("Name", "Email")
+    .Where(new ConditionExpression("Status", ConditionOperator.Equal, "Active"))
+    .WithPageNumber(2)
+    .WithPageSize(10)
+    .WithAlias("a1");
 ------
 SQL - "SELECT a1.Name, a1.Email FROM Accounts a1 WHERE (a1.Status = 'Active') OFFSET 10 ROWS FETCH NEXT 10 ROWS ONLY";
 ```
 
 <b>SELECT QUERY with Nested Filters:</b>
 ```c#
+OOP style:
 var query = new SqlQueryExpression("Accounts", new ColumnSet("Name", "Email"), "a1");
 var filter = new FilterExpression(LogicalOperator.AND);
 filter.AddCondition(new ConditionExpression("Status", ConditionOperator.Equal, "Active"));
@@ -47,6 +67,20 @@ nestedFilter.AddCondition(new ConditionExpression("Type", ConditionOperator.Equa
 nestedFilter.AddCondition(new ConditionExpression("Type", ConditionOperator.Equal, "Vendor"));
 filter.AddCondition(new ConditionExpression(nestedFilter));
 query.Filter = filter;
+
+Fluent style:
+var query = FluentSqlQueryExpression.QueryTable("Accounts")
+            .WithAlias("a1")
+            .Select("Name", "Email")
+            .Where(new ConditionExpression("Status", ConditionOperator.Equal, "Active"))
+            .Where(new FilterExpression(LogicalOperator.OR)
+            {
+                Conditions =
+                {
+                    new ConditionExpression("Type", ConditionOperator.Equal, "Customer"),
+                    new ConditionExpression("Type", ConditionOperator.Equal, "Vendor")
+                }
+            });    
 ------
 SQL - SELECT a1.Name, a1.Email FROM Accounts a1
       WHERE (a1.Status = 'Active' AND (a1.Type = 'Customer' OR a1.Type = 'Vendor'))     
@@ -69,6 +103,7 @@ SQL - SELECT a1.Name, a1.Email FROM Accounts a1
 <b>SELECT QUERY with Nested Joins:</b>
 
 ```c#
+OOP style:
 var query = new SqlQueryExpression("Accounts", new ColumnSet("Name", "Email"), "a1");
 
 query.Filter.AddCondition(new ConditionExpression("Status", ConditionOperator.Equal, "Active"));
@@ -99,6 +134,19 @@ nestedLinkEntity.LinkCriteria.AddCondition(new ConditionExpression("Status", Con
 
 linkEntity.LinkTables.Add(nestedLinkEntity);
 query.LinkTables.Add(linkEntity);
+
+Fluent style:
+var query = FluentSqlQueryExpression.QueryTable("Accounts", alias:"a1")
+    .Select("Name", "Email")
+    .Where(new ConditionExpression("Status", ConditionOperator.Equal, "Active"))
+    .Join("Contacts", "AccountId", "AccountId", "c1", JoinType.Left)
+    .Select("FirstName", "LastName")
+    .Where(new ConditionExpression("Status", ConditionOperator.Equal, "Active"))
+        .SubJoin(JoinType.Inner, "Orders", "ContactId", "ContactId", "o1")
+            .Select("OrderId", "TotalAmount")
+            .Where(new ConditionExpression("Status", ConditionOperator.Equal, "Completed"))
+        .CloseSubJoin()
+    .CloseJoin();
 ------
 SQL - SELECT a1.Name, a1.Email, c1.FirstName, c1.LastName, o1.OrderId, o1.TotalAmount FROM Accounts a1
       LEFT JOIN Contacts c1 ON a1.AccountId = c1.AccountId 
@@ -118,5 +166,7 @@ You can find more examples in Ap.Tools.SqlQueryExpression.Tests project
 - APPLY (CROSS and OUTER)
 - PIVOT
 - QUERY HINTS
+
+Please be aware that Fluent approach is a bit more limited at the moment than OO style.
 
 <i> Feel free to contribute towards implementation of any listed queries :) </i>
